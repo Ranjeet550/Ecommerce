@@ -119,18 +119,18 @@ const SettingsPage = () => {
   
   if (loading) {
     return (
-      <AdminLayout>
+      
         <div className="animate-pulse">
           <div className="h-8 bg-gray-200 rounded w-1/4 mb-8"></div>
           <div className="h-64 bg-gray-200 rounded mb-8"></div>
           <div className="h-64 bg-gray-200 rounded"></div>
         </div>
-      </AdminLayout>
+      
     );
   }
   
   return (
-    <AdminLayout>
+    <>
       <h1 className="text-2xl font-bold mb-6">Settings</h1>
       
       <div className="bg-white rounded-lg shadow mb-6">
@@ -493,7 +493,7 @@ const SettingsPage = () => {
           </form>
         </div>
       </div>
-    </AdminLayout>
+    </>
   );
 };
 

@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FiShoppingBag, FiUsers, FiShoppingCart, FiGrid, FiTrendingUp, FiTrendingDown } from 'react-icons/fi';
+import { FiShoppingBag, FiUsers, FiShoppingCart, FiGrid, FiTrendingUp } from 'react-icons/fi';
 import apiService from '../../services/api';
-import AdminLayout from '../../components/layout/AdminLayout';
 import { getImageUrl, getPlaceholderImage } from '../../utils/imageUtils';
 
 const DashboardPage = () => {
@@ -107,25 +106,23 @@ const DashboardPage = () => {
 
   if (loading) {
     return (
-      <AdminLayout>
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/4 mb-8"></div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {[...Array(4)].map((_, index) => (
-              <div key={index} className="bg-gray-200 h-32 rounded-lg"></div>
-            ))}
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="bg-gray-200 h-96 rounded-lg"></div>
-            <div className="bg-gray-200 h-96 rounded-lg"></div>
-          </div>
+      <div className="animate-pulse">
+        <div className="h-8 bg-gray-200 rounded w-1/4 mb-8"></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {[...Array(4)].map((_, index) => (
+            <div key={index} className="bg-gray-200 h-32 rounded-lg"></div>
+          ))}
         </div>
-      </AdminLayout>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-gray-200 h-96 rounded-lg"></div>
+          <div className="bg-gray-200 h-96 rounded-lg"></div>
+        </div>
+      </div>
     );
   }
 
   return (
-    <AdminLayout>
+    <>
       <h1 className="text-2xl font-bold mb-8">Dashboard</h1>
 
       {/* Stats Cards */}
@@ -298,7 +295,7 @@ const DashboardPage = () => {
           </div>
         </div>
       </div>
-    </AdminLayout>
+    </>
   );
 };
 

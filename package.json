@@ -1,0 +1,12 @@
+{
+  "name": "grocery-ecommerce",
+  "version": "1.0.0",
+  "description": "Grocery E-commerce Application",
+  "engines": {
+    "node": "18.x"
+  },
+  "scripts": {
+    "start": "cd server && node server.js",
+    "heroku-postbuild": "cd server && npm install"
+  }
+}

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FiSave, FiArrowLeft } from 'react-icons/fi';
 import toast from 'react-hot-toast';
-import AdminLayout from '../../components/layout/AdminLayout';
+
 import apiService from '../../services/api';
 
 const ProductFormPage = () => {
@@ -119,7 +119,7 @@ const ProductFormPage = () => {
   };
 
   return (
-    <AdminLayout>
+    <>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">{isEditMode ? 'Edit Product' : 'Add New Product'}</h1>
         <button
@@ -309,7 +309,7 @@ const ProductFormPage = () => {
           </div>
         </form>
       </div>
-    </AdminLayout>
+    </>
   );
 };
 

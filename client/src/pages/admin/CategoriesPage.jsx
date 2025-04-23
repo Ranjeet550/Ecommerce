@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
 import toast from 'react-hot-toast';
-import AdminLayout from '../../components/layout/AdminLayout';
+
 import apiService from '../../services/api';
 
 const CategoriesPage = () => {
@@ -123,17 +123,17 @@ const CategoriesPage = () => {
   
   if (loading) {
     return (
-      <AdminLayout>
+      <>
         <div className="animate-pulse">
           <div className="h-8 bg-gray-200 rounded w-1/4 mb-8"></div>
           <div className="h-64 bg-gray-200 rounded"></div>
         </div>
-      </AdminLayout>
+      </>
     );
   }
   
   return (
-    <AdminLayout>
+    <>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Categories</h1>
         <button
@@ -333,7 +333,7 @@ const CategoriesPage = () => {
           </div>
         </div>
       )}
-    </AdminLayout>
+    </>
   );
 };
 

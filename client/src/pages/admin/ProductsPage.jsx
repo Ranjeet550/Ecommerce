@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiPlus, FiEdit2, FiTrash2, FiSearch, FiFilter } from 'react-icons/fi';
 import toast from 'react-hot-toast';
-import AdminLayout from '../../components/layout/AdminLayout';
+
 import apiService from '../../services/api';
 import { getImageUrl, getPlaceholderImage } from '../../utils/imageUtils';
 
@@ -78,18 +78,18 @@ const ProductsPage = () => {
 
   if (loading) {
     return (
-      <AdminLayout>
+      <>
         <div className="animate-pulse">
           <div className="h-8 bg-gray-200 rounded w-1/4 mb-8"></div>
           <div className="h-12 bg-gray-200 rounded mb-8"></div>
           <div className="h-64 bg-gray-200 rounded"></div>
         </div>
-      </AdminLayout>
+      </>
     );
   }
 
   return (
-    <AdminLayout>
+    <>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Products</h1>
         <Link to="/admin/products/new" className="btn btn-primary flex items-center">
@@ -289,7 +289,7 @@ const ProductsPage = () => {
           </div>
         </div>
       )}
-    </AdminLayout>
+    </>
   );
 };
 

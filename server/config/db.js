@@ -6,6 +6,18 @@ dotenv.config();
 // Function to create database if it doesn't exist
 const createDatabaseIfNotExists = async () => {
   try {
+    // Skip database creation if using managed database services
+    if (process.env.DATABASE_URL) {
+      console.log('Using Render database - skipping database creation');
+      return true;
+    }
+
+    // Skip database creation if using JawsDB on Heroku
+    if (process.env.JAWSDB_URL) {
+      console.log('Using JawsDB - skipping database creation');
+      return true;
+    }
+
     console.log('Creating database if it doesn\'t exist...');
     console.log(`DB_HOST: ${process.env.DB_HOST || 'localhost'}`);
     console.log(`DB_USER: ${process.env.DB_USER || 'root'}`);
@@ -38,6 +50,19 @@ const createDatabaseIfNotExists = async () => {
 
 // Create a connection pool
 const createPool = () => {
+  // Check if DATABASE_URL exists (Render database)
+  if (process.env.DATABASE_URL) {
+    console.log('Using Render database connection URL');
+    return mysql.createPool(process.env.DATABASE_URL);
+  }
+
+  // Check if JAWSDB_URL exists (Heroku JawsDB add-on)
+  if (process.env.JAWSDB_URL) {
+    console.log('Using JawsDB connection URL');
+    return mysql.createPool(process.env.JAWSDB_URL);
+  }
+
+  // Use regular connection parameters
   return mysql.createPool({
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',

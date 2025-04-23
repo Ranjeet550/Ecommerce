@@ -120,26 +120,32 @@ const Header = () => {
         )}
       </div>
 
+      {/* Mobile Search Bar - Always visible on mobile */}
+      <div className="md:hidden bg-white border-t">
+        <div className="container-custom py-2">
+          <form
+            onSubmit={handleSearch}
+            className="flex items-center bg-gray-100 rounded-full px-4 py-2"
+          >
+            <input
+              type="text"
+              placeholder="Search for products..."
+              className="flex-1 bg-transparent outline-none"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button type="submit" className="ml-2 text-gray-500 hover:text-green-600">
+              <FaSearch />
+            </button>
+          </form>
+        </div>
+      </div>
+
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden bg-white border-t">
           <div className="container-custom py-4">
-            {/* Mobile Search */}
-            <form
-              onSubmit={handleSearch}
-              className="flex items-center bg-gray-100 rounded-full px-4 py-2 mb-4"
-            >
-              <input
-                type="text"
-                placeholder="Search for products..."
-                className="flex-1 bg-transparent outline-none"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <button type="submit" className="ml-2 text-gray-500 hover:text-green-600">
-                <FaSearch />
-              </button>
-            </form>
+            {/* Mobile Navigation Menu */}
 
             {/* Mobile Navigation */}
             <nav className="flex flex-col space-y-4">

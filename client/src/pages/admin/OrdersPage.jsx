@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FiSearch, FiFilter, FiEye } from 'react-icons/fi';
 import { format } from 'date-fns';
 import toast from 'react-hot-toast';
-import AdminLayout from '../../components/layout/AdminLayout';
+
 import apiService from '../../services/api';
 
 const OrdersPage = () => {
@@ -85,18 +85,18 @@ const OrdersPage = () => {
 
   if (loading) {
     return (
-      <AdminLayout>
+      <>
         <div className="animate-pulse">
           <div className="h-8 bg-gray-200 rounded w-1/4 mb-8"></div>
           <div className="h-12 bg-gray-200 rounded mb-8"></div>
           <div className="h-64 bg-gray-200 rounded"></div>
         </div>
-      </AdminLayout>
+      </>
     );
   }
 
   return (
-    <AdminLayout>
+    <>
       <h1 className="text-2xl font-bold mb-6">Orders</h1>
 
       {/* Filters */}
@@ -231,7 +231,7 @@ const OrdersPage = () => {
           </table>
         </div>
       </div>
-    </AdminLayout>
+    </>
   );
 };
 

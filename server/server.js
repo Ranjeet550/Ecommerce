@@ -28,7 +28,7 @@ const __dirname = path.dirname(__filename);
 // Middleware
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
-    ? ['https://your-frontend-domain.netlify.app', 'https://your-frontend-domain.vercel.app']
+    ? ['https://your-frontend-domain.netlify.app', 'https://your-frontend-domain.vercel.app', 'https://your-frontend-domain.onrender.com']
     : ['http://localhost:3000', 'http://127.0.0.1:3000'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -76,6 +76,9 @@ app.use((err, req, res, next) => {
 // Start server
 const PORT = process.env.PORT || 5000;
 
+// For Heroku deployment
+const HOST = '0.0.0.0';
+
 // Initialize database and start server
 const startServer = async () => {
   try {
@@ -94,7 +97,7 @@ const startServer = async () => {
       console.log('Database initialization complete');
 
       // Start Express server
-      app.listen(PORT, () => {
+      app.listen(PORT, HOST, () => {
         console.log(`Server running on port ${PORT}`);
         console.log(`API available at http://localhost:${PORT}/api`);
         console.log('Available routes:');

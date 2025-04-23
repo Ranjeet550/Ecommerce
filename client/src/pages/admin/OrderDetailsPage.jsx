@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { FiArrowLeft, FiSave, FiPrinter } from 'react-icons/fi';
 import { format } from 'date-fns';
 import toast from 'react-hot-toast';
-import AdminLayout from '../../components/layout/AdminLayout';
+
 import apiService from '../../services/api';
 import { getImageUrl, getPlaceholderImage } from '../../utils/imageUtils';
 
@@ -97,19 +97,19 @@ const OrderDetailsPage = () => {
 
   if (loading) {
     return (
-      <AdminLayout>
+      <>
         <div className="animate-pulse">
           <div className="h-8 bg-gray-200 rounded w-1/4 mb-8"></div>
           <div className="h-32 bg-gray-200 rounded mb-8"></div>
           <div className="h-64 bg-gray-200 rounded"></div>
         </div>
-      </AdminLayout>
+      </>
     );
   }
 
   if (!order) {
     return (
-      <AdminLayout>
+      <>
         <div className="text-center py-8">
           <h2 className="text-2xl font-bold mb-4">Order Not Found</h2>
           <p className="text-gray-600 mb-6">The order you're looking for doesn't exist or you don't have permission to view it.</p>
@@ -120,7 +120,7 @@ const OrderDetailsPage = () => {
             Back to Orders
           </button>
         </div>
-      </AdminLayout>
+      </>
     );
   }
 
@@ -134,7 +134,7 @@ const OrderDetailsPage = () => {
   }
 
   return (
-    <AdminLayout>
+    <>
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center">
           <button
@@ -406,7 +406,7 @@ const OrderDetailsPage = () => {
           <button className="btn btn-primary">Save Notes</button>
         </div>
       </div>
-    </AdminLayout>
+    </>
   );
 };
 

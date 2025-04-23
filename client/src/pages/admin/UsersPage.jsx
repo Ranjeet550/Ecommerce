@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FiSearch, FiEdit2, FiTrash2, FiUserPlus } from 'react-icons/fi';
 import toast from 'react-hot-toast';
-import AdminLayout from '../../components/layout/AdminLayout';
 import apiService from '../../services/api';
 
 const UsersPage = () => {
@@ -200,18 +199,16 @@ const UsersPage = () => {
 
   if (loading) {
     return (
-      <AdminLayout>
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/4 mb-8"></div>
-          <div className="h-12 bg-gray-200 rounded mb-8"></div>
-          <div className="h-64 bg-gray-200 rounded"></div>
-        </div>
-      </AdminLayout>
+      <div className="animate-pulse">
+        <div className="h-8 bg-gray-200 rounded w-1/4 mb-8"></div>
+        <div className="h-12 bg-gray-200 rounded mb-8"></div>
+        <div className="h-64 bg-gray-200 rounded"></div>
+      </div>
     );
   }
 
   return (
-    <AdminLayout>
+    <>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Users</h1>
         <button
@@ -532,7 +529,7 @@ const UsersPage = () => {
           </div>
         </div>
       )}
-    </AdminLayout>
+    </>
   );
 };
 
