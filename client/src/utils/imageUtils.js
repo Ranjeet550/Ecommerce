@@ -2,8 +2,19 @@
  * Utility functions for handling images
  */
 
+// Determine the API base URL based on environment
+const getApiBaseUrl = () => {
+  // For local development
+  if (import.meta.env.DEV) {
+    return 'http://localhost:5000';
+  }
+
+  // For production, use the environment variable or fallback to a default
+  return import.meta.env.VITE_API_URL?.replace('/api', '') || 'https://your-backend-api-url.com';
+};
+
 // Base URL for the API
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = getApiBaseUrl();
 
 /**
  * Get the full URL for an image
@@ -12,17 +23,17 @@ const API_BASE_URL = 'http://localhost:5000';
  */
 export const getImageUrl = (imagePath) => {
   if (!imagePath) return null;
-  
+
   // If the image path is already a full URL, return it
   if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
     return imagePath;
   }
-  
+
   // If the image path starts with a slash, append it to the API base URL
   if (imagePath.startsWith('/')) {
     return `${API_BASE_URL}${imagePath}`;
   }
-  
+
   // Otherwise, assume it's a relative path and append it to the API base URL
   return `${API_BASE_URL}/${imagePath}`;
 };

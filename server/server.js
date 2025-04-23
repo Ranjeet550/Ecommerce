@@ -27,7 +27,9 @@ const __dirname = path.dirname(__filename);
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+  origin: process.env.NODE_ENV === 'production'
+    ? ['https://your-frontend-domain.netlify.app', 'https://your-frontend-domain.vercel.app']
+    : ['http://localhost:3000', 'http://127.0.0.1:3000'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']

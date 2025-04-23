@@ -1,9 +1,20 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
+// Determine the API base URL based on environment
+const getBaseUrl = () => {
+  // For local development, use the proxy set up in vite.config.js
+  if (import.meta.env.DEV) {
+    return '/api';
+  }
+
+  // For production, use the environment variable or fallback to a default
+  return import.meta.env.VITE_API_URL || 'https://your-backend-api-url.com/api';
+};
+
 // Create axios instance with default config
 const api = axios.create({
-  baseURL: '/api', // This will use the proxy set up in vite.config.js
+  baseURL: getBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
   },
