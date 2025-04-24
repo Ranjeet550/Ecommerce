@@ -6,12 +6,16 @@ class Wishlist {
     try {
       // Get wishlist items with product details
       const [wishlistItems] = await db.query(`
-        SELECT w.id, w.productId, p.name, p.price, p.originalPrice, p.unit, p.image, p.discount
+        SELECT w.id, w.productId, p.name, p.price, p.originalPrice, p.unit, p.image,
+               CASE WHEN p.originalPrice > p.price
+                    THEN ROUND(((p.originalPrice - p.price) / p.originalPrice) * 100)
+                    ELSE 0
+               END as discount
         FROM wishlist w
         JOIN products p ON w.productId = p.id
         WHERE w.userId = ?
       `, [userId]);
-      
+
       return wishlistItems;
     } catch (error) {
       throw new Error(`Error getting wishlist: ${error.message}`);
@@ -26,17 +30,17 @@ class Wishlist {
         'SELECT * FROM wishlist WHERE userId = ? AND productId = ?',
         [userId, productId]
       );
-      
+
       if (existingItems.length > 0) {
         throw new Error('Product already in wishlist');
       }
-      
-      // Add to wishlist
+
+      // Add to wishlist with current timestamp
       await db.query(
-        'INSERT INTO wishlist (userId, productId) VALUES (?, ?)',
+        'INSERT INTO wishlist (userId, productId, createdAt) VALUES (?, ?, NOW())',
         [userId, productId]
       );
-      
+
       return await this.getByUserId(userId);
     } catch (error) {
       throw new Error(`Error adding to wishlist: ${error.message}`);
@@ -48,7 +52,7 @@ class Wishlist {
     try {
       // Remove from wishlist
       await db.query('DELETE FROM wishlist WHERE id = ? AND userId = ?', [wishlistItemId, userId]);
-      
+
       return await this.getByUserId(userId);
     } catch (error) {
       throw new Error(`Error removing from wishlist: ${error.message}`);

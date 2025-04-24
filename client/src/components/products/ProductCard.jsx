@@ -1,12 +1,16 @@
 import { Link } from 'react-router-dom';
-import { FaShoppingCart } from 'react-icons/fa';
+import { FaShoppingCart, FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useCart } from '../../context/CartContext';
+import { useWishlist } from '../../context/WishlistContext';
+import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 import { getImageUrl, getPlaceholderImage } from '../../utils/imageUtils';
 
 const ProductCard = ({ product }) => {
   const { id, name, price, originalPrice, unit, discount, image } = product;
   const { addToCart } = useCart();
+  const { addToWishlist, removeFromWishlist, isInWishlist, wishlistItems, fetchWishlist } = useWishlist();
+  const { isAuthenticated } = useAuth();
 
   const handleAddToCart = (e) => {
     e.preventDefault();
@@ -30,8 +34,60 @@ const ProductCard = ({ product }) => {
     }
   };
 
+  const handleWishlistAction = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!isAuthenticated) {
+      toast.error('Please login to manage your wishlist');
+      return;
+    }
+
+    try {
+      const productId = parseInt(id);
+      const productInWishlist = isInWishlist(productId);
+
+      if (productInWishlist) {
+        // Find the wishlist item with this product ID
+        const wishlistItem = wishlistItems.find(item => {
+          const itemProductId = typeof item.productId === 'number' ?
+            item.productId : parseInt(item.productId, 10);
+          return itemProductId === productId;
+        });
+
+        if (wishlistItem) {
+          removeFromWishlist(wishlistItem.id);
+          // Toast message will be shown by the removeFromWishlist function
+        } else {
+          console.error('Product is in wishlist but item not found');
+          // Refresh wishlist to get the latest data
+          fetchWishlist();
+        }
+      } else {
+        addToWishlist(productId);
+        // Toast message will be shown by the addToWishlist function
+      }
+    } catch (error) {
+      console.error('Error managing wishlist:', error);
+      toast.error('Failed to update wishlist. Please try again.');
+    }
+  };
+
   return (
-    <div className="card group">
+    <div className="card group relative">
+      {/* Wishlist Button */}
+      <button
+        className="absolute top-2 left-2 z-10 p-2 bg-white bg-opacity-80 rounded-full shadow-sm hover:bg-opacity-100 transition-all"
+        onClick={handleWishlistAction}
+        aria-label={isInWishlist(parseInt(id)) ? "Remove from wishlist" : "Add to wishlist"}
+      >
+        {isInWishlist(parseInt(id)) ? (
+          <FaHeart className="text-red-500" />
+        ) : (
+          <FaRegHeart className="text-gray-600 hover:text-red-500" />
+        )}
+      </button>
+
       {/* Product Image */}
       <Link to={`/products/${id}`} className="block overflow-hidden">
         {product.image ? (

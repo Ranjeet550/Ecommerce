@@ -5,7 +5,9 @@ import App from './App.jsx'
 import { AuthProvider } from './context/AuthContext'
 import { CartProvider } from './context/CartContext'
 import { OrderProvider } from './context/OrderContext'
+import { WishlistProvider } from './context/WishlistContext'
 import './index.css'
+import './styles/scrollbar-hide.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -13,7 +15,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <AuthProvider>
         <CartProvider>
           <OrderProvider>
-            <App />
+            <WishlistProvider>
+              <App />
+            </WishlistProvider>
           </OrderProvider>
         </CartProvider>
       </AuthProvider>

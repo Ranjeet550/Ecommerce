@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { FaMinus, FaPlus, FaShoppingCart, FaHeart, FaShare } from 'react-icons/fa';
+import { FaMinus, FaPlus, FaShoppingCart, FaHeart, FaShare, FaRegHeart } from 'react-icons/fa';
 import ProductCard from '../components/products/ProductCard';
 import toast from 'react-hot-toast';
 import apiService from '../services/api';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useWishlist } from '../context/WishlistContext';
 import { getImageUrl, getPlaceholderImage } from '../utils/imageUtils';
 
 const ProductDetailPage = () => {
@@ -16,6 +17,7 @@ const ProductDetailPage = () => {
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
   const { isAuthenticated } = useAuth();
+  const { addToWishlist, isInWishlist, removeFromWishlist, wishlistItems, fetchWishlist } = useWishlist();
 
   useEffect(() => {
     // Scroll to top when component mounts
@@ -126,13 +128,40 @@ const ProductDetailPage = () => {
     }
   };
 
-  const handleAddToWishlist = async () => {
+  const handleWishlistAction = async () => {
+    if (!isAuthenticated) {
+      toast.error('Please login to manage your wishlist');
+      return;
+    }
+
     try {
-      await apiService.user.addToWishlist(product.id);
-      toast.success(`${product.name} added to wishlist`);
+      // Check if product is already in wishlist
+      const productId = parseInt(product.id);
+      const productInWishlist = isInWishlist(productId);
+
+      if (productInWishlist) {
+        // Find the wishlist item with this product ID
+        const wishlistItem = wishlistItems.find(item => {
+          const itemProductId = typeof item.productId === 'number' ?
+            item.productId : parseInt(item.productId, 10);
+          return itemProductId === productId;
+        });
+
+        if (wishlistItem) {
+          await removeFromWishlist(wishlistItem.id);
+          // Toast message will be shown by the removeFromWishlist function
+        } else {
+          console.error('Product is in wishlist but item not found');
+          // Refresh wishlist to get the latest data
+          await fetchWishlist();
+        }
+      } else {
+        await addToWishlist(productId);
+        // Toast message will be shown by the addToWishlist function
+      }
     } catch (error) {
-      console.error('Error adding to wishlist:', error);
-      toast.error('Failed to add to wishlist. Please try again.');
+      console.error('Error managing wishlist:', error);
+      toast.error('Failed to update wishlist. Please try again.');
     }
   };
 
@@ -323,11 +352,11 @@ const ProductDetailPage = () => {
               Add to Cart
             </button>
             <button
-              className="btn btn-secondary flex items-center justify-center gap-2"
-              onClick={handleAddToWishlist}
+              className={`btn ${isInWishlist(parseInt(product.id)) ? 'bg-red-100 text-red-600 hover:bg-red-200' : 'btn-secondary'} flex items-center justify-center gap-2`}
+              onClick={handleWishlistAction}
             >
-              <FaHeart />
-              Wishlist
+              {isInWishlist(parseInt(product.id)) ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
+              {isInWishlist(parseInt(product.id)) ? 'In Wishlist' : 'Add to Wishlist'}
             </button>
             <button className="btn btn-secondary flex items-center justify-center">
               <FaShare />

@@ -1,18 +1,27 @@
 import { Link, useLocation } from 'react-router-dom';
-import { FaHome, FaShoppingBag, FaShoppingCart, FaUser } from 'react-icons/fa';
+import { FaHome, FaShoppingBag, FaShoppingCart, FaUser, FaHeart } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
+import { useWishlist } from '../../context/WishlistContext';
 
 const MobileNavigation = () => {
   const location = useLocation();
   const { isAuthenticated } = useAuth();
   const { itemCount: cartItemsCount } = useCart();
+  const { wishlistItems } = useWishlist();
 
   // Navigation items
   const navItems = [
     { path: '/', icon: <FaHome size={20} />, label: 'Home' },
     { path: '/products', icon: <FaShoppingBag size={20} />, label: 'Products' },
     { path: '/cart', icon: <FaShoppingCart size={20} />, label: 'Cart', badge: cartItemsCount },
+    {
+      path: isAuthenticated ? '/wishlist' : '/login',
+      icon: <FaHeart size={20} />,
+      label: 'Wishlist',
+      badge: isAuthenticated ? wishlistItems.length : 0,
+      requiresAuth: true
+    },
     {
       path: isAuthenticated ? '/profile' : '/login',
       icon: <FaUser size={20} />,
@@ -39,7 +48,7 @@ const MobileNavigation = () => {
             <div className="relative">
               {item.icon}
               {item.badge && item.badge > 0 && (
-                <span className="absolute -top-1 -right-1 bg-green-600 text-white text-xs rounded-full min-w-[16px] h-4 px-1 flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full min-w-[16px] h-4 px-1 flex items-center justify-center">
                   {item.badge}
                 </span>
               )}
